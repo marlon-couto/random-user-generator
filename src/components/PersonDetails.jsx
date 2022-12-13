@@ -11,9 +11,10 @@ export default class PersonDetails extends Component {
     this.fetchPerson();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(_nextProps, nextState) {
     const { age } = nextState.user.dob;
-    return age <= 50;
+    const maxAge = 50
+    return age <= maxAge;
   }
 
   fetchPerson = async () => {
@@ -36,7 +37,7 @@ export default class PersonDetails extends Component {
           loadingElement
         ) : (
           <PersonCard
-            picture={picture}
+            picture={picture.thumbnail}
             personName={`${name.first} ${name.last}`}
             email={email}
             age={dob.age}
