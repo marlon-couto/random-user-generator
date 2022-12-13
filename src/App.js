@@ -7,6 +7,19 @@ export default class App extends Component {
     user: {},
   };
 
+  componentDidMount() {
+    this.fetchPerson();
+  }
+
+  fetchPerson = async () => {
+    const url = 'https://api.randomuser.me/';
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    this.setState({ user: data, loading: false });
+  };
+
   render() {
     const { loading, user } = this.state;
     const { name, email, picture, dob } = user;
