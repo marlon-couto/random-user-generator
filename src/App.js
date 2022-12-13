@@ -11,13 +11,18 @@ export default class App extends Component {
     this.fetchPerson();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const { age } = nextState.user.dob;
+    return age <= 50;
+  }
+
   fetchPerson = async () => {
     const url = 'https://api.randomuser.me/';
 
     const response = await fetch(url);
     const data = await response.json();
 
-    this.setState({ user: data, loading: false });
+    this.setState({ user: data.results, loading: false });
   };
 
   render() {
