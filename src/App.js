@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import PersonDetails from './components/PersonDetails';
 
 export default class App extends Component {
-  constructor() {
-    super();
+  state = {
+    loading: true,
+    user: {},
+  };
 
-    this.state = {
-      loading: true,
-      user: {},
-    };
-  }
-  
   render() {
     const { loading, user } = this.state;
     const { name, email, picture, dob } = user;
