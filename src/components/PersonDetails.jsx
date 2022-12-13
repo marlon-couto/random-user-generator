@@ -1,27 +1,48 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PersonCard from './PersonCard';
 
 export default class PersonDetails extends Component {
+  state = {
+    loading: true,
+    user: {},
+  };
+
+  componentDidMount() {
+    this.fetchPerson();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { age } = nextState.user.dob;
+    return age <= 50;
+  }
+
+  fetchPerson = async () => {
+    const url = 'https://api.randomuser.me/';
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    this.setState({ user: data.results, loading: false });
+  };
+
   render() {
-    const { picture, personName, email, age } = this.props;
+    const { loading, user } = this.state;
+    const { name, email, picture, dob } = user;
+    const loadingElement = <span>Carregando...</span>;
 
     return (
       <div>
-        <img
-          src={picture}
-          alt={personName}
-        />
-        <p>{personName}</p>
-        <p>{age}</p>
-        <p>{email}</p>
+        {loading ? (
+          loadingElement
+        ) : (
+          <PersonCard
+            picture={picture}
+            personName={`${name.first} ${name.last}`}
+            email={email}
+            age={dob.age}
+          />
+        )}
       </div>
     );
   }
 }
-
-PersonDetails.propTypes = {
-  picture: PropTypes.string.isRequired,
-  personName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  age: PropTypes.number.isRequired,
-};
